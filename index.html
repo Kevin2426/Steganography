@@ -1,225 +1,371 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<link rel="preconnect" href="https://fonts.gstatic.com">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>- Steganography</title>
 
-		<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
-		<script src="assets/core.js"></script>
-		<script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js">
-		</script>
-		<script>
-        	ScrollReveal({ reset: false });
-		</script>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>HiddenWhisper</title>
-<link rel="stylesheet" href="assets/core.css">
-</head>
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
 
-<body>
-	<header id="header"  class="fixed-top d-flex align-items-center">
-		<div class="container d-flex justify-content-between">
-		  <div class="logo">
-			<h1>
-			  <a href="index.html"><span>Hidden</span>Whisper</a>
-			</h1>
-		  </div>
-	
-		  <nav id="navbar" class="navbar">
-			<ul>
-			  <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-			  <li>
-				<a class="nav-link scrollto" href="#about">About</a>
-			  </li>
-			  <li>
-				<a class="nav-link scrollto" href="#features">Features</a>
-			  </li>
-	
-	
-	
-			  <li>
-				<a class="nav-link scrollto" href="#Contact">Contact</a>
-			  </li>
-			  
-			  
-			</ul>
-			<i class="bi bi-list mobile-nav-toggle"></i>
-		  </nav>
-		  <!-- .navbar -->
-		</div>
-	  </header>
-	<main>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;700&display=swap"
+      rel="stylesheet"
+    />
 
-		<section id="hero">
-			<h1>Steganography</h1>	<!-- This is a 'hero' image to attract attention to the user -->
-		</section>
+    <style>
+      /* Global Styles */
+      body {
+        font-family: "Lato", sans-serif;
+        background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+        color: #fff;
+        min-height: 100vh;
+        padding-top: 80px;
+      }
 
+      a {
+        text-decoration: none;
+      }
 
-		<section id="posts">
+      /* Header */
+      header {
+        background-color: rgba(0, 0, 0, 0.7);
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1030;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      }
 
-			<article id="week1">
-				<div class="images">
-					<figure>
-      					<img src="assets/images/pic1.jpg" alt="Picture of me ripping my hair out" />
-						<br>
-						<figcaption>
-						</figcaption>
-					</figure>
+      .logo h1 a {
+        color: #fdbb2d;
+        font-weight: 700;
+        font-size: 1.8rem;
+        letter-spacing: 2px;
+      }
 
-    			</div>
+      /* Navbar */
+      nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 1.5rem;
+      }
 
-				<div class="content">
-					<h2 class="titlez">Image Steganography</h2>
+      nav ul li a {
+        color: #fff;
+        font-weight: 600;
+        padding: 0.5rem 0.75rem;
+        transition: color 0.3s ease;
+      }
 
-					<div>
-						<p>
-							Image Steganography is the process of hiding information which can be text, image or video inside a cover image.
-						</p>
+      nav ul li a:hover,
+      nav ul li a.active {
+        color: #fdbb2d;
+        border-bottom: 2px solid #fdbb2d;
+      }
 
-							<a href="image.html" class="button"><span>Read more</span></a>
-				</div>
-				</div>
-			</article>
+      /* Hero Section */
+      #hero {
+        text-align: center;
+        padding: 100px 20px 80px;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 15px;
+        max-width: 900px;
+        margin: 0 auto 60px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+      }
 
-			<article>
-				<div class="images">
-					<figure>
-      					<img src="assets/images/pic2.png" alt="Picture of animal abuse?" />
-						<br>
-						<figcaption>
-						</figcaption>
-					</figure>
+      #hero h1 {
+        font-size: 4rem;
+        font-weight: 900;
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+      }
 
-    			</div>
+      #hero p {
+        font-size: 1.3rem;
+        font-weight: 300;
+        color: #fdbb2d;
+        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+      }
 
-				<div class="content">
-					<h2>Audio Steganography</h2>
+      /* Posts Section */
+      #posts {
+        max-width: 1100px;
+        margin: 0 auto 80px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2rem;
+      }
 
-					<div>
-						<p>
+      article {
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s ease;
+      }
 
-							Audio steganography is about hiding the secret message into the audio. It is a technique uses to secure the transmission of secret information or hide their existence.
+      article:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.9);
+      }
 
+      .images {
+        flex-shrink: 0;
+        overflow: hidden;
+      }
 
-						</p>
+      .images img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+      }
 
-							<a href="audio.html" class="button"><span>Read more</span></a>
-				</div>
-				</div>
-			</article>
+      article:hover .images img {
+        transform: scale(1.05);
+      }
 
+      .content {
+        padding: 20px 25px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
 
-				<article>
-					<div class="images">
-					<figure>
-      					<img src="assets/images/pic3.jpg" alt="Picture of animal abuse?" />
-						<br>
-						<figcaption>
-						</figcaption>
-					</figure>
+      .content h2 {
+        font-weight: 700;
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+        color: #fdbb2d;
+        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+      }
 
-    			</div>
+      .content p {
+        flex-grow: 1;
+        font-weight: 300;
+        font-size: 1rem;
+        line-height: 1.5;
+        margin-bottom: 20px;
+        color: #ddd;
+      }
 
-				<div class="content">
-					<h2>Text Steganography</h2>
+      .button {
+        align-self: flex-start;
+        background-color: #fdbb2d;
+        color: #212529;
+        padding: 10px 20px;
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 1rem;
+        box-shadow: 0 4px 10px rgba(253, 187, 45, 0.6);
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+      }
 
-					<div>
-						<p>
-							Text steganography is a mechanism of hiding secret text message inside another text as a covering message or generating a cover message related with the original secret message
+      .button:hover {
+        background-color: #e6a920;
+        transform: scale(1.05);
+        color: #111;
+        text-decoration: none;
+      }
 
-						</p>
+      /* Footer */
+      footer {
+        background: rgba(0, 0, 0, 0.7);
+        color: #fdbb2d;
+        padding: 30px 20px;
+        text-align: center;
+        font-weight: 300;
+        font-size: 0.9rem;
+        box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.7);
+      }
 
-							<a href="text.html" class="button"><span>Read more</span></a>
-				</div>
-				</div>
-			</article>
-			<article id="week1">
-				<div class="images">
-					<figure>
-      					<img src="assets/images/pic1.jpg" alt="Picture of me ripping my hair out" />
-						<br>
-						<figcaption>
-						
-						</figcaption>
-					</figure>
+      footer a {
+        color: #fdbb2d;
+        text-decoration: none;
+        font-weight: 600;
+      }
 
-    			</div>
+      footer a:hover {
+        text-decoration: underline;
+      }
 
-				<div class="content">
-					<h2 class="titlez">Image Steganography</h2>
+      /* Responsive */
+      @media (max-width: 768px) {
+        #hero h1 {
+          font-size: 3rem;
+        }
 
-					<div>
-						<p>
-							Image Steganography is the process of hiding information which can be text, image or video inside a cover image.
-						</p>
+        #posts {
+          grid-template-columns: 1fr;
+        }
 
-							<a href="C:\Users\vishu\Desktop\CyberSecurityWebsite-main\CyberSecurityWebsite-main\private-main\imagetoimage.html" class="button"><span>Read more</span></a>
-				</div>
-				</div>
-			</article>
-		</section>
-	</main>
-	<footer>
-		<div id="Contact" class="footer-area">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-4">
-						<div class="footer-content">
-							<div class="footer-head">
-								<div class="footer-logo">
-									<h2><span>Hidden</span>Whisper</h2>
-								</div>
-								
-								<div class="footer-icons">
-									<ul>
-										<li>
-											<aa href="https://www.facebook.com/share/18NrQEVCdT/" class="fa fa-facebook" title="Facebook">
-												<span class="sr-only">Facebook</span>
-											</a>
-										</li>
-										<li>
-											<aa href="https://www.instagram.com/.ikevin__0012?igsh=bWFlbGRzZ3B0MjBk" class="fa fa-instagram" title="Instagram">
-												<span class="sr-only">Instagram</span>
-											</a>
-										</li>
-										<li>
-											<aa href="https://www.linkedin.com/in/kevin-faldu-272ba0226?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" title="LinkedIn">
-												<i class="fa fa-linkedin"></i>
-												<span class="sr-only">LinkedIn</span>
-											</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- end single footer -->
-					<div class="col-md-4">
-						<div class="footer-content">
-							<div class="footer-head">
-								<h4>information</h4>
-								
-								<div class="footer-contacts">
-									<p><span>Mobile:</span> +91 9512387263</p>
-									<p><span>Email:</span> faldukevin26@gmail.com</p>
-									<p><span>Working Hours:</span> 9am-5pm</p>
-									<p><span>Website:</span> <a href="">KevinFaldu</a></p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- end single footer -->
-					
-									
-	
-	
-	  <!-- End  Footer -->
-	<script>
-		ScrollReveal().reveal('.content', { delay: 50 })
-		ScrollReveal().reveal('.images', { delay: 50 })
-		ScrollReveal().reveal('.listzz', { interval: 50 });
-	</script>
-</body>
+        .images img {
+          height: 180px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header id="header" class="fixed-top d-flex align-items-center shadow-sm">
+      <div class="container d-flex justify-content-between align-items-center">
+        <div class="logo">
+          <h1>
+            <a href="index.html"><span>STEGANOGRAPHY</span></a>
+          </h1>
+        </div>
+        <nav id="navbar" class="navbar">
+          <ul class="d-flex mb-0">
+            <li><a class="nav-link active" href="#hero">Home</a></li>
+            <li><a class="nav-link" href="#about">About</a></li>
+            <li><a class="nav-link" href="#features">Features</a></li>
+            <li><a class="nav-link" href="#Contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section id="hero" class="my-5">
+        <h1>Steganography</h1>
+        <p>
+          Securely hide your secret messages inside images, audio, and video.
+        </p>
+      </section>
+
+      <section id="posts" aria-label="Steganography Techniques">
+        <article>
+          <div class="images">
+            <img src="assets/images/pic1.jpg" alt="Image Steganography" />
+          </div>
+          <div class="content">
+            <h2>Image Steganography</h2>
+            <p>
+              Image Steganography is the process of hiding information which can
+              be text, image or video inside a cover image.
+            </p>
+            <a
+              href="image.html"
+              class="button"
+              aria-label="Read more about Image Steganography"
+              >Read more</a
+            >
+          </div>
+        </article>
+
+        <article>
+          <div class="images">
+            <img src="assets/images/pic2.png" alt="Audio Steganography" />
+          </div>
+          <div class="content">
+            <h2>Audio Steganography</h2>
+            <p>
+              Audio steganography is about hiding the secret message into the
+              audio. It is a technique used to secure the transmission of secret
+              information or hide their existence.
+            </p>
+            <a
+              href="audio.html"
+              class="button"
+              aria-label="Read more about Audio Steganography"
+              >Read more</a
+            >
+          </div>
+        </article>
+
+        <article>
+          <div class="images">
+            <img src="assets/images/pic3.jpg" alt="Video Steganography" />
+          </div>
+          <div class="content">
+            <h2>Video Steganography</h2>
+            <p>
+              Hide secret messages in videos with military-grade password
+              protection.
+            </p>
+            <a
+              href="video.html"
+              class="button"
+              aria-label="Read more about Video Steganography"
+              >Read more</a
+            >
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>© 2024 Steganography. All rights reserved.</p>
+        <p>
+          Contact:
+          <a href="mailto:faldukevin26@gmail.com">faldukevin26@gmail.com</a> |
+          Phone: +91 9512387263
+        </p>
+        <p>
+          <a
+            href="https://www.facebook.com/share/18NrQEVCdT/"
+            target="_blank"
+            rel="noopener"
+            aria-label="Facebook"
+            ><i class="fa fa-facebook fa-lg me-3"></i
+          ></a>
+          <a
+            href="https://www.instagram.com/.ikevin__0012?igsh=bWFlbGRzZ3B0MjBk"
+            target="_blank"
+            rel="noopener"
+            aria-label="Instagram"
+            ><i class="fa fa-instagram fa-lg me-3"></i
+          ></a>
+          <a
+            href="https://www.linkedin.com/in/kevin-faldu-272ba0226"
+            target="_blank"
+            rel="noopener"
+            aria-label="LinkedIn"
+            ><i class="fa fa-linkedin fa-lg"></i
+          ></a>
+        </p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ScrollReveal -->
+    <script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
+    <script>
+      ScrollReveal().reveal("#hero", {
+        delay: 200,
+        distance: "50px",
+        origin: "bottom",
+        duration: 1000,
+      });
+      ScrollReveal().reveal("#posts article", {
+        interval: 200,
+        distance: "30px",
+        origin: "bottom",
+        duration: 800,
+      });
+    </script>
+  </body>
 </html>
