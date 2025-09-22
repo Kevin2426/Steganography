@@ -1,0 +1,8 @@
+footer a i {
+  color: #fdbb2d; /* your theme yellow */
+  transition: color 0.3s ease;
+}
+
+footer a:hover i {
+  color: #ffffff; /* white on hover */
+}
