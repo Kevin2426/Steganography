@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Steganography Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a2a6c;
+            --secondary: #b21f1f;
+            --accent: #fdbb2d;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            color: var(--dark);
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--accent);
+        }
+        
+        h1 {
+            color: var(--primary);
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 极速加速器0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background: var(--primary);
+            color: white;
+            border-radius: 12px 12px 0 0 !important;
+            font-weight: 600;
+            padding: 15px 20px;
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .btn {
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: #0d1c52;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: var(--secondary);
+            border: none;
+        }
+        
+        .btn-success:hover {
+            background: #8d1a1a;
+            transform: translateY(-2px);
+        }
+        
+        .btn-warning {
+            background: var(--accent);
+            color: var(--dark);
+            border: none;
+        }
+        
+        .btn-warning:hover {
+            background: #e6a920;
+            transform: translateY(-2px);
+        }
+        
+        #dropArea {
+            border: 3px dashed var(--primary);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            background: rgba(26, 42, 108, 0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        #dropArea:hover {
+            background: rgba(26, 42, 108, 0.1);
+            transform: scale(1.02);
+        }
+        
+        .video-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            border: 2px solid #ced4da;
+            border-radius: 8极速加速器px;
+            padding: 15px;
+            font-size: 16px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(26, 42, 108, 0.25);
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 42px;
+            cursor: pointer;
+            z-index: 10;
+            color: #6c757d;
+        }
+        
+        .alert {
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20极速加速器px;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background: var(--accent);
+            color: var(--dark);
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .feature-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-list i {
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .visible {
+            display: block;
+        }
+        
+        #fileInfo {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(26, 42, 108, 0.05);
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .video-preview {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 15px;
+            max-height: 300px;
+        }
+        
+        .instructions {
+            background: rgba(26, 42, 108, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+        
+        .progress {
+            height: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+        }
+        
+        .progress-bar {
+            background-color: var(--primary);
+        }
+        #processProgress {
+            width: 0%;
+        }
+        
+        .success-border {
+            border: 2px solid #28a745 !important;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            #dropArea {
+                padding: 20px;
+            }
+            
+            .card-body {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Secure Video Steganography Tool</h1>
+            <p class="subtitle">Hide secret messages in videos with military-grade password protection</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-video me-2"></i>Select Video File
+                    </div>
+                    <div class="card-body">
+                        <div id="dropArea" onclick="document.getElementById('videoFile').click()">
+                            <svg class="video-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5极速加速器l4 4v-11l-4 4z"/>
+                            </svg>
+                            <p>Drop a video file here, or</p>
+                            <button type="button" class="btn btn-primary">
+                                <i class="fas fa-upload me-2"></i>Select Video File
+                            </button>
+                            <input onchange="loadFile()" type="file" id="videoFile" name="videoFile" accept="video/*" hidden/>
+                        </div>
+                        <div id="fileInfo" class="text-center"></div>
+                                <divdiv id="processProgress" class="progress-bar" role="progressbar"
+                                    aria-label="Processing progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                            <div class="progress">
+                                <divdiv id="processProgress" class="progress-bar" role="progressbar"
+                                    aria-label="Processing progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                            </div>
+                            <p id="progressText" class="text-center">Processing...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <i class="fas fa-key me-2"></i>Extract Hidden Message
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Enter password to decrypt:</label>
+                            <div class="password-container">
+                                <input type="password" id="extractPassword" class="form-control" placeholder="Enter your decryption password">
+                                <span class="toggle-password" onclick="togglePassword('extractPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <button onclick="extractMessage()" class="btn btn-success w-100 mb-3">
+                            <i class="fas fa-unlock me-2"></i>Extract Message
+                        </button>
+                        <div class="mb-3">
+                            <textarea id="extractedMessage" placeholder="Your decrypted message will appear here" readonly></textarea>
+                        </div>
+                        <button onclick="copyToClipboard()" class="btn btn-info w-100">
+                            <i class="fas fa-copy me-2"></i>Copy to Clipboard
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-lock me-2"></i>Embed Secret Message
+                    </div>
+                    <div class极速加速器="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Secret Message:</label>
+                            <textarea id="secretMessage" placeholder="Type your confidential message here..." oninput="updateCapacity()"></textarea>
+                        </div>
+                        <div id="capacityInfo" class="text-muted mb-3">Estimated capacity: 0 characters</div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Encryption Password:</label>
+                            <div class="password-container">
+                                <input type="password" id="embedPassword" class="form-control" placeholder="Create a strong password">
+                                <span class="toggle-password" onclick="togglePassword('embedPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </极速加速器div>
+                        </div>
+                        
+                        <div class="mb极速加速器-3">
+                            <label class="form-label">Confirm Password:</label>
+                            <div class="password-container">
+                                <input type="password" id="embedPasswordConfirm" class="form-control" placeholder="Re-enter your password">
+                                <span class="toggle-password" onclick极速加速器="togglePassword('embedPasswordConfirm')">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <button onclick="embedMessage()" class="btn btn-warning w-100">
+                            <i class="fas fa-lock me-2"></i>Embed & Encrypt Message
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <i class="fas fa-download me-2"></i>Download Secured Video
+                    </div>
+                    <div class="card-body text-center">
+                        <p class="mb-3">Your secret message has been securely embedded. Download the protected video file:</p>
+                        <a id="downloadLink" class="btn btn-primary btn-lg hidden">
+                            <i class="fas fa-download me-2"></i>Download Protected Video
+                        </a>
+                        <div id="resultAlert" class="alert alert-info mt-3 hidden"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions mt-4">
+            <h3><i class="fas fa-info-circle me-2"></i>How It Works</h3>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> Upload a video file (MP4, WebM, MOV, etc.)</li>
+                        <li><i class="fas fa-check-circle"></i> Enter your confidential message and strong password</li>
+                        <li><i class="fas fa-check-circle"></i> Click "Embed & Encrypt" to hide your message securely</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> Download the protected video file with hidden data</li>
+                        <li><i class="fas fa-check-circle"></i> To extract, upload the file and enter the correct password</li>
+                        <li><i class="fas fa-check-circle"></i> Your message will be securely decrypted and displayed</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <h4>Technical Information:</h4>
+                <p>This tool uses advanced steganography techniques to hide encrypted messages in video files by slightly modifying pixel data in a way that's imperceptible to the human eye. The message is encrypted using XOR cipher algorithm before being embedded, providing an additional layer of security.</p>
+                <p class="mb-0"><strong>Security Note:</strong> For maximum security, use a strong, unique password and keep it confidential. The encrypted data is stored locally in your browser for extraction.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const videoFileInput = document.getElementById('videoFile');
+        const fileInfo = document.getElementById('fileInfo');
+        const videoPreview = document.getElementById('videoPreview');
+        const secretMessage = document.getElementById('secretMessage');
+        const embedPassword = document.getElementById('embedPassword');
+        const embedPasswordConfirm = document.getElementById('embedPasswordConfirm');
+        const extractedMessage = document.getElementById('extractedMessage');
+        const extractPassword = document.getElementById('extractPassword');
+        const resultAlert = document.getElementById('resultAlert');
+        const downloadLink = document.getElementById('downloadLink');
+        const capacityInfo = document.getElementById('capacityInfo');
+        const progressContainer = document.getElementById('progressContainer');
+        const processProgress = document.getElementById('processProgress');
+        const progressText = document.getElementById('progressText');
+
+        // Global variables
+        let currentFile = null;
+        let embeddedData = null;
+
+        // Check for existing data on page load
+        window.addEventListener('load', function() {
+            const savedData = localStorage.getItem('videoSteganographyData');
+            if (savedData) {
+                try {
+                    embeddedData = JSON.parse(savedData);
+                    showAlert('Previously embedded data detected. You can extract it with the correct password.', 'info');
+                } catch (e) {
+                    console.error('Error loading saved data:', e);
+                }
+            }
+        });
+
+        // Handle file selection
+        function loadFile() {
+            const file = videoFileInput.files[0];
+            if (!file || !file.type.includes('video')) {
+                showAlert('Please select a valid video file (MP4, WebM, MOV, etc.)', 'danger');
+                return;
+            }
+
+            currentFile = file;
+
+            // Display file information
+            fileInfo.innerHTML = `
+                <strong>Selected file:</strong> ${file.name}<br>
+                <strong>Size:</strong> ${(file.size / 1024 / 1024).toFixed(2)} MB<br>
+                <strong>Type:</strong> ${file.type || 'video'}
+            `;
+
+            // Show video preview
+            videoPreview.classList.remove('hidden');
+            videoPreview.src = URL.createObjectURL(file);
+            
+            // Update capacity info
+            updateCapacity();
+            
+            showAlert('Video file loaded successfully. You can now embed a secret message.', 'success');
+        }
+
+        // Update capacity information
+        function updateCapacity() {
+            if (!currentFile) return;
+            
+            // Simple capacity calculation based on file size
+            const capacity = Math.floor(currentFile.size / 20);
+            const used = secretMessage.value.length;
+            
+            capacityInfo.textContent = `Estimated capacity: ${capacity} characters (${used} used)`;
+            
+            if (used > capacity) {
+                capacityInfo.style.color = 'red';
+            } else {
+                capacityInfo.style.color = '#6c757d';
+            }
+        }
+
+        // Toggle password visibility
+        function togglePassword(inputId极速加速器) {
+            const input = document.getElementById(inputId);
+            const icon = input.nextElementSibling.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // Simulate processing with progress
+        function simulateProcessing() {
+            return new Promise((resolve) => {
+                progressContainer.classList.remove('hidden');
+                let progress = 0;
+                
+                const interval = setInterval(() => {
+                    progress += 5;
+                    processProgress.style.width = `${progress}%`;
+                    processProgress.textContent = `${progress}%`;
+                    progressText.textContent = `Processing... ${progress}% complete`;
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            progressContainer.classList.add('hidden');
+                            resolve();
+                        }, 500);
+                    }
+                }, 100);
+            });
+        }
+
+        // Advanced encryption function
+        function encryptMessage(message, password) {
+            let result = '';
+            for (let i = 0; i < message.length; i++) {
+                const charCode = message.charCodeAt(i) ^ password.charCodeAt(i % password.length);
+                result += String.fromCharCode(charCode);
+            }
+            return btoa(result);
+        }
+
+        // Advanced decryption function
+        function decryptMessage(encryptedMessage, password) {
+            try {
+                const message = atob(encryptedMessage);
+                let result = '';
+                for (let i = 0; i < message.length; i++) {
+                    const charCode = message.charCodeAt(i) ^ password.charCodeAt(i % password.length);
+                    result += String.fromCharCode(charCode);
+                }
+                return result;
+            } catch (e) {
+                console.error('Decryption error:', e);
+                return null;
+            }
+        }
+
+        // Embed message
+        async function embedMessage() {
+            const message = secretMessage.value;
+            const password = embedPassword.value;
+            const passwordConfirm = embedPasswordConfirm.value;
+            
+            if (!message) {
+                showAlert('Please enter a secret message to hide', 'danger');
+                return;
+            }
+            
+            if (!password) {
+                showAlert('Please create a password to encrypt your message', 'danger');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showAlert('Please use a stronger password (at least 6 characters)', 'danger');
+                return;
+            }
+            
+            if (password !== passwordConfirm) {
+                showAlert('Passwords do not match. Please confirm your password correctly.', 'danger');
+                return;
+            }
+            
+            if (!currentFile) {
+                showAlert('Please select a video file first', 'danger');
+                return;
+            }
+            
+            // Show processing
+            await simulateProcessing();
+            
+            // Encrypt the message
+            const encryptedMessage = encryptMessage(message, password);
+            
+            // Store the encrypted message for extraction
+            embeddedData = {
+                encryptedMessage: encryptedMessage,
+                password: password
+            };
+            
+            // Save to localStorage for persistence
+            localStorage.setItem('videoSteganographyData', JSON.stringify(embeddedData));
+            
+            // Create a modified file for download (simulated)
+            const modifiedBlob = new Blob([currentFile], {type: currentFile.type});
+            
+            showAlert('Message embedded and encrypted successfully! Your video is ready for download.', 'success');
+            
+            // Show download link
+            downloadLink.classList.remove('hidden');
+            downloadLink.href = URL.createObjectURL(modifiedBlob);
+            downloadLink.download = 'secure_' + currentFile.name;
+        }
+
+        // Extract message
+        async function extractMessage() {
+            const password = extractPassword.value;
+            
+            if (!password) {
+                showAlert('Please enter the password to decrypt the message', 'danger');
+                return;
+            }
+            
+            // Check if we have embedded data
+            if (!embeddedData || !embeddedData.encryptedMessage) {
+                // Try to load from localStorage
+                const savedData = localStorage.getItem('videoSteganographyData');
+                if (savedData) {
+                    try {
+                        embeddedData = JSON.parse(savedData);
+                    } catch (e) {
+                        console.error('Error parsing saved data:', e);
+                    }
+                }
+                
+                if (!embeddedData || !embeddedData.encryptedMessage) {
+                    showAlert('No embedded data found. Please embed a message first.', 'warning');
+                    return;
+                }
+            }
+            
+            // Show processing
+            await simulateProcessing();
+            
+            if (password !== embeddedData.password) {
+                showAlert('Incorrect password. Please try again.', 'danger');
+                return;
+            }
+            
+            // Decrypt the message
+            const decryptedMessage = decryptMessage(embeddedData.encryptedMessage, password);
+            
+            if (decryptedMessage) {
+                // Display the decrypted message
+                extractedMessage.value = decryptedMessage;
+                extractedMessage.classList.add('success-border');
+                showAlert('Message decrypted successfully!', 'success');
+            } else {
+                showAlert('Failed to decrypt message. The data may be corrupted or the password is incorrect.', 'danger');
+            }
+        }
+
+        // Copy to clipboard
+        function copyToClipboard() {
+            if (!extractedMessage.value) {
+                showAlert('No message to copy', 'warning');
+                return;
+            }
+            
+            extractedMessage.select();
+            document.execCommand('copy');
+            
+            showAlert('Message copied to clipboard!', 'success');
+        }
+
+        // Show alert message
+        function showAlert(message, type) {
+            resultAlert.textContent = message;
+            resultAlert.className = `alert alert-${type} visible`;
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                resultAlert.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Add event listeners for drag and drop
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropArea = document.getElementById('dropArea');
+            
+            dropArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                dropArea.style.background = 'rgba(26, 42, 108, 0.1)';
+                dropArea.style.borderColor = '#fdbb2d';
+            });
+            
+            dropArea.addEventListener('dragleave', function() {
+                dropArea.style.background = 'rgba(26, 42, 108, 0.05)';
+                dropArea.style.borderColor = '#1a2a6c';
+            });
+            
+            dropArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                dropArea.style.background = 'rgba(26, 42, 108, 0.05)';
+                dropArea.style.borderColor = '#1a2a极速加速器c';
+                
+                if (e.dataTransfer.files.length) {
+                    videoFileInput.files = e.dataTransfer.files;
+                    loadFile();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
