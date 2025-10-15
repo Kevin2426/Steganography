@@ -359,18 +359,49 @@
     let currentFile = null;
     let embeddedData = null;
 
-    // Load file
+    // Load file - Fixed version
     function loadFile() {
       const file = videoFileInput.files[0];
-      if (!file || !file.type.includes("video")) {
-        showAlert("Please select a valid video file (MP4, WebM, MOV, etc.)", "danger");
+      if (!file) {
+        showAlert("Please select a video file", "danger");
+        return;
+      }
+
+      // Check if it's a video file more reliably
+      const videoTypes = [
+        'video/mp4', 'video/webm', 'video/ogg', 'video/quicktime', 
+        'video/x-msvideo', 'video/x-matroska', 'video/3gpp'
+      ];
+      
+      // Check by file extension as well for better compatibility
+      const fileExt = file.name.split('.').pop().toLowerCase();
+      const videoExts = ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv', '3gp'];
+      
+      if (!videoTypes.includes(file.type) && !videoExts.includes(fileExt)) {
+        showAlert("Please select a valid video file (MP4, WebM, MOV, AVI, etc.)", "danger");
         return;
       }
 
       currentFile = file;
-      fileInfo.innerHTML = `<strong>File:</strong> ${file.name}<br><strong>Size:</strong> ${(file.size / 1024 / 1024).toFixed(2)} MB`;
+      
+      // Format file size display
+      const fileSize = file.size;
+      let sizeText;
+      if (fileSize < 1024) {
+        sizeText = fileSize + ' bytes';
+      } else if (fileSize < 1024 * 1024) {
+        sizeText = (fileSize / 1024).toFixed(2) + ' KB';
+      } else {
+        sizeText = (fileSize / 1024 / 1024).toFixed(2) + ' MB';
+      }
+      
+      fileInfo.innerHTML = `<strong>Selected file:</strong> ${file.name}<br><strong>Size:</strong> ${sizeText}<br><strong>Type:</strong> ${file.type || 'Unknown'}`;
+      
+      // Set up video preview
       videoPreview.classList.remove("hidden");
       videoPreview.src = URL.createObjectURL(file);
+      videoPreview.load();
+      
       updateCapacity();
       showAlert("Video loaded successfully.", "success");
     }
@@ -442,15 +473,22 @@
 
       if (!msg) return showAlert("Enter a secret message", "danger");
       if (!pass) return showAlert("Enter a password", "danger");
-      if (pass.length < 6) return showAlert("Password must be at least 6 chars", "danger");
+      if (pass.length < 6) return showAlert("Password must be at least 6 characters", "danger");
       if (pass !== confirm) return showAlert("Passwords do not match", "danger");
       if (!currentFile) return showAlert("Select a video file first", "danger");
+
+      // Check if message fits in video capacity
+      const capacity = Math.floor(currentFile.size / 20);
+      if (msg.length > capacity) {
+        return showAlert(`Message too long. Maximum capacity is ${capacity} characters.`, "danger");
+      }
 
       await simulateProcessing();
       const encrypted = encryptMessage(msg, pass);
       embeddedData = { encryptedMessage: encrypted, password: pass };
       localStorage.setItem("videoSteganographyData", JSON.stringify(embeddedData));
 
+      // Create a new blob with the same data (in a real app, this would embed the message)
       const blob = new Blob([currentFile], { type: currentFile.type });
       showAlert("Message embedded successfully!", "success");
       downloadLink.classList.remove("hidden");
@@ -464,7 +502,7 @@
       if (!embeddedData) {
         const saved = localStorage.getItem("videoSteganographyData");
         if (saved) embeddedData = JSON.parse(saved);
-        else return showAlert("No data found. Embed first.", "warning");
+        else return showAlert("No embedded data found. Embed a message first.", "warning");
       }
 
       await simulateProcessing();
@@ -502,8 +540,10 @@
       drop.addEventListener("drop", (e) => {
         e.preventDefault();
         drop.style.background = "rgba(26,42,108,0.05)";
-        videoFileInput.files = e.dataTransfer.files;
-        loadFile();
+        if (e.dataTransfer.files.length) {
+          videoFileInput.files = e.dataTransfer.files;
+          loadFile();
+        }
       });
     });
   </script>
